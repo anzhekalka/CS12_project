@@ -30,6 +30,7 @@ def game():
 
 
 def main_menu():
+    #задаем название
     pygame.display.set_caption("GAME")
 
     play_btn = Button(play_btn_img, (WIDTH / 2, HEIGHT / 2))
