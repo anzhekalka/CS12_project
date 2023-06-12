@@ -30,6 +30,13 @@ def game():
 
 
 def main_menu():
+
+    #задаем название окну
+
+    # pygame.mixer.music.load(menu_fon_music)
+    # pygame.mixer.music.set_volume(music_volume)
+    # pygame.mixer.music.play(-1)
+
     pygame.display.set_caption("GAME")
 
     play_btn = Button(play_btn_img, (WIDTH / 2, HEIGHT / 2))
