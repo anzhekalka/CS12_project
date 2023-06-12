@@ -30,6 +30,9 @@ def game():
 
 
 def main_menu():
+
+    #задаем название окну
+
     # pygame.mixer.music.load(menu_fon_music)
     # pygame.mixer.music.set_volume(music_volume)
     # pygame.mixer.music.play(-1)
