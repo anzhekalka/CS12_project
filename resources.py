@@ -22,3 +22,6 @@ exit_btn_img = pygame.image.load(os.path.join(buttons_img_folder, "exit.png")).c
 
 font_file = os.path.join(font_folder, "image/Dune_Rise.ttf")
 font_text = pygame.font.Font(font_file, 40)
+
+# menu music and sounds
+menu_fon_music = os.path.join(sound_folder, "music_fon_menu.mp3")
