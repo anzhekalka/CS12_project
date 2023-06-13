@@ -3,10 +3,12 @@ import sys
 
 
 def game():
+    player = PLayer((WIDTH / 2, HEIGHT / 2))
+
     text_game = font_text.render("Game", False, (0, 0, 0))
     text_rect = text_game.get_rect()
     text_rect = (150, 150)
-    player = PLayer((WIDTH / 2, HEIGHT / 2))
+
 
     objet_group = pygame.sprite.Group()
     objet_group.add(player)
@@ -18,6 +20,7 @@ def game():
         objet_group.draw(SCREEN)
         pygame.display.flip()
         mouse_pos = pygame.mouse.get_pos()
+
         player.update()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -31,7 +34,6 @@ def game():
 
 def main_menu():
 
-    #задаем название окну
 
     # pygame.mixer.music.load(menu_fon_music)
     # pygame.mixer.music.set_volume(music_volume)
@@ -56,6 +58,7 @@ def main_menu():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 if play_btn.rect.collidepoint(mouse_pos):
+                    SCREEN.blit(fon_img, (0, 0))
                     game()
                 elif exit_btn.rect.collidepoint(mouse_pos):
                     sys.exit()
