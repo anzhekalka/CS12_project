@@ -15,12 +15,12 @@ sound_folder = os.path.join(main_folder, "sound")
 font_folder = os.path.join(main_folder, "font")
 
 fon_img = pygame.image.load(os.path.join(background_img_folder, "fon.jpg")).convert_alpha()
-player_img = pygame.image.load(os.path.join(buttons_img_folder, "play.png")).convert_alpha()
+player_img = pygame.image.load(os.path.join(main_folder,"image/character_official.png"))
 play_btn_img = pygame.image.load(os.path.join(buttons_img_folder, "play.png")).convert_alpha()
 options_btn_img = pygame.image.load(os.path.join(buttons_img_folder, "options.png")).convert_alpha()
 exit_btn_img = pygame.image.load(os.path.join(buttons_img_folder, "exit.png")).convert_alpha()
 
-font_file = os.path.join(font_folder, "image/Dune_Rise.ttf")
+font_file = os.path.join(font_folder, "Dune_Rise.ttf")
 font_text = pygame.font.Font(font_file, 40)
 
 # menu music and sounds

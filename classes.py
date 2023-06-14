@@ -18,6 +18,7 @@ class PLayer(pygame.sprite.Sprite):
 
     def update(self):
         pressed_button = pygame.key.get_pressed()
+        print("update")
         if pressed_button[pygame.K_a]:
             self.rect.centerx -= 2
         elif pressed_button[pygame.K_d]:
