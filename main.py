@@ -41,15 +41,20 @@ def main_menu():
 
     pygame.display.set_caption("GAME")
 
-    play_btn = Button(play_btn_img, (WIDTH / 2, HEIGHT / 2))
-    options_btn = Button(options_btn_img, (WIDTH / 2, HEIGHT * 0.33))
-    exit_btn = Button(exit_btn_img, (WIDTH / 2, HEIGHT * 0.67))
+    play_btn = Button(play_btn_img, (WIDTH / 2, HEIGHT * 0.44))
+    #options_btn = Button(options_btn_img, (WIDTH / 2, HEIGHT * 0.33))
+    exit_btn = Button(exit_btn_img, (WIDTH / 2, HEIGHT * 0.66))
+    heading_img = Images(heading_menu_img, (WIDTH / 2, HEIGHT * 0.12))
 
     buttons_gr = pygame.sprite.Group()
-    buttons_gr.add(play_btn, options_btn, exit_btn)
+    images_gr= pygame.sprite.Group()
+    buttons_gr.add(play_btn, exit_btn)
+    images_gr.add(heading_img)
 
     SCREEN.blit(fon_img, (0, 0))
     buttons_gr.draw(SCREEN)
+    images_gr.draw(SCREEN)
+
     pygame.display.flip()
     while True:
         mouse_pos = pygame.mouse.get_pos()
