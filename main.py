@@ -51,6 +51,9 @@ def game():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    return
 
         if min_fps > clock.get_fps() > 0:
             min_fps = clock.get_fps()
@@ -78,12 +81,12 @@ def main_menu():
     buttons_gr.add(play_btn, exit_btn)
     images_gr.add(heading_img)
 
-    SCREEN.blit(fon_img, (0, 0))
-    buttons_gr.draw(SCREEN)
-    images_gr.draw(SCREEN)
-
-    pygame.display.flip()
     while True:
+        SCREEN.blit(fon_img, (0, 0))
+        buttons_gr.draw(SCREEN)
+        images_gr.draw(SCREEN)
+
+        pygame.display.flip()
         mouse_pos = pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
