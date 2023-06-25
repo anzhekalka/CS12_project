@@ -1,12 +1,15 @@
 from resources import *
 
 
+
 class Button(pygame.sprite.Sprite):
     def __init__(self, img_file, pos):
         pygame.sprite.Sprite.__init__(self)
         self.image = img_file
         self.rect = self.image.get_rect()
         self.rect.center = pos
+
+
 class Images(pygame.sprite.Sprite):
     def __init__(self, img_file, pos):
         pygame.sprite.Sprite.__init__(self)
@@ -14,21 +17,51 @@ class Images(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = pos
 
+
 class PLayer(pygame.sprite.Sprite):
-    def __init__(self, pos):
+    def __init__(self, pos, image_to_put):
         pygame.sprite.Sprite.__init__(self)
-        self.image = player_img
+        self.image = image_to_put
+        self.image_left = image_to_put
+        self.image_right = pygame.transform.flip(self.image, True, False)
         self.rect = self.image.get_rect()
         self.rect.center = pos
+        self.is_left = True
 
-    def update(self):
+
+
+
+    def update(self, x):
         pressed_button = pygame.key.get_pressed()
-        print("update")
+        if pressed_button[pygame.K_a] or pressed_button[pygame.K_LEFT]:
+            self.rect.centerx -= x
+            if self.rect.left < 0:
+                self.rect.right = 1200
+        elif pressed_button[pygame.K_d] or pressed_button[pygame.K_RIGHT]:
+            self.rect.centerx += x
+            if self.rect.right > 1200:
+                self.rect.left = 0
+
+
+        '''
         if pressed_button[pygame.K_a]:
             self.rect.centerx -= 2
+            if not self.is_left:
+                self.image = self.image_left
+                self.is_left = True
         elif pressed_button[pygame.K_d]:
             self.rect.centerx += 2
+            if self.is_left:
+                self.image = self.image_right
+                self.is_left = False
         elif pressed_button[pygame.K_w]:
-            self.rect.centery -= 2
+            self.rect.centery -= x
         elif pressed_button[pygame.K_s]:
-            self.rect.centery += 2
+            self.rect.centery += x
+        '''
+    def falling(self, object, tick_for_jump):
+        if self.rect.bottom != object.rect.top and tick_for_jump == 0:
+            if object.rect.top > self.rect.bottom:
+                self.rect.bottom += 5
+            elif object.rect.top < self.rect.bottom:
+                self.rect.bottom = object.rect.top
