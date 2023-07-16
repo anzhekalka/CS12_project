@@ -22,8 +22,8 @@ options_btn_img = pygame.image.load(os.path.join(buttons_img_folder, "options.pn
 exit_btn_img = pygame.image.load(os.path.join(buttons_img_folder, "exit.png")).convert_alpha()
 exit2_btn_img = pygame.image.load(os.path.join(buttons_img_folder, "exit3.png")).convert_alpha()
 heading_menu_img = pygame.image.load(os.path.join(main_folder, "image/heading.png")).convert_alpha()
-brick_img = pygame.image.load(os.path.join(main_folder, "image/brick.png")).convert_alpha()
-obstacles_list = [exit2_btn_img]
+obst0_img = pygame.image.load(os.path.join(main_folder, "image/obst0.png")).convert_alpha()
+obstacles_list = [obst0_img]
 
 font_file = os.path.join(font_folder, "Montserrat.ttf")
 font_text = pygame.font.Font(font_file, 40)
