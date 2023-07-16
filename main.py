@@ -1,28 +1,39 @@
 from classes import *
 import sys
-
+import random
 
 def game():
-    player = PLayer((WIDTH / 2, HEIGHT / 2), player_img)
+    player = PLayer((WIDTH * 0.1, HEIGHT * 0.67), player_img)
+    level_counter = 1
+    text_level1 = font_text.render("LEVEL " + str(level_counter), False, (249, 246, 238))
+    text_rect = (WIDTH / 2 - 50, HEIGHT * 0.05)
 
-    text_level1 = font_text.render("Level 1", False, (249, 246, 238))
-    text_rect = text_level1.get_rect()
-    text_rect = (500, 100)
+    exit_btn = Button(exit2_btn_img, (WIDTH * 0.1, HEIGHT * 0.075))
 
-    exit_btn = Button(exit2_btn_img, (WIDTH * 0.1, HEIGHT * 0.1))
+    obstacles_group = pygame.sprite.Group()
+    load_level(obstacles_group)
 
     objet_group = pygame.sprite.Group()
     objet_group.add(player, exit_btn)
     clock = pygame.time.Clock()
     min_fps = 200
+
     while True:
-        SCREEN.blit(fon_img, (0, 0))
+        SCREEN.blit(fon_game_img, (0, 0))
         SCREEN.blit(text_level1, text_rect)
         objet_group.draw(SCREEN)
+        obstacles_group.draw(SCREEN)
         pygame.display.flip()
-        mouse_pos = pygame.mouse.get_pos()
 
-        player.update(2)
+        player.update(obstacles_group)
+        if player.rect.left>WIDTH:
+            player.rect.center = (WIDTH * 0.1, HEIGHT * 0.67)
+            load_level(obstacles_group)
+            level_counter += 1
+            #список фонов
+            #fon_game_img = randon.choice ()
+
+            text_level1 = font_text.render("LEVEL " + str(level_counter), False, (249, 246, 238))
         mouse_pos = pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -35,6 +46,13 @@ def game():
             min_fps = clock.get_fps()
         print(f"Фактическое кол-во FPS = {clock.get_fps()} а минимальное = {min_fps}")
         clock.tick(FPS)
+
+
+def load_level(obstacles_group):
+    for element in obstacles_group:
+        element.kill()
+    for i in range (6):
+        obstacles_group.add(Obstacles(0, (random.randint(100, WIDTH), HEIGHT * 0.67)))
 
 
 def main_menu():
