@@ -3,13 +3,10 @@ import sys
 
 
 def game():
-    global tick_for_jump
-    tick_for_jump = 0
+
     player = PLayer((WIDTH / 2, 200), player_big_img)
 
-    text_game = font_text.render("Game", False, (0, 0, 0))
-    text_rect = text_game.get_rect()
-    text_rect = (150, 150)
+    #text_game = font_text.render("Game", False, (0, 0, 0))
 
 
     objet_group = pygame.sprite.Group()
@@ -20,33 +17,21 @@ def game():
         pressed_button = pygame.key.get_pressed()
         mouse_pos = pygame.mouse.get_pos()
         hitbox_floor = Images(hitbox_img, (WIDTH / 2, 593))
-        #floor_1 = Images(level1_floor_img,(WIDTH / 2, HEIGHT / 2))
+        floor_1 = Images(level1_floor_img,(WIDTH / 2, HEIGHT / 2))
 
         level1_images_gr = pygame.sprite.Group()
         level1_images_gr.add(hitbox_floor)
-        #level1_images_gr.add(floor_1)
+        level1_images_gr.add(floor_1)
 
         SCREEN.blit(level1_back_img, (-100, 0))
         objet_group.draw(SCREEN)
         level1_images_gr.draw(SCREEN)
-
-
-        player.update(4)
-        player.falling(hitbox_floor, tick_for_jump)
-        tick_for_jump = 0
-        if pressed_button[pygame.K_w] and tick_for_jump == 0:
-            tick_for_jump = 1
-
-        if tick_for_jump != 0:
-            if tick_for_jump < 6:
-                player.rect.centery -= 5
-                print(tick_for_jump)
-            tick_for_jump += 1
-            if tick_for_jump == 11:
-                tick_for_jump = 0
         pygame.display.flip()
 
-        #print(f"низ перса {player.rect.bottom}, вверх хитбокса {hitbox_floor.rect.top} центр перса {player.rect.centery} вверх перса {player.rect.top}")
+
+        player.update(12)
+        player.falling(hitbox_floor)
+        pygame.display.flip()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -54,7 +39,7 @@ def game():
 
         if min_fps > clock.get_fps() > 0:
             min_fps = clock.get_fps()
-        #print(f"Фактическое кол-во FPS = {clock.get_fps()} а минимальное = {min_fps}")
+
         clock.tick(FPS)
 
 

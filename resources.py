@@ -5,7 +5,7 @@ WIDTH = 1200
 HEIGHT = 800
 pygame.init()
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
-FPS = 200
+FPS = 30
 
 main_folder = os.path.dirname(__file__)
 image_folder = os.path.join(main_folder, "image")
