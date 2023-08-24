@@ -1,15 +1,16 @@
 from classes import *
 import sys
 
-def level1():
-    player = PLayer((WIDTH / 2, 200), player_img)
 
-    hitbox_floor = Images(hitbox_img, (WIDTH / 2, 593))
-    floor_1 = Images(level1_floor_img, (WIDTH / 2, HEIGHT / 2))
+def game():
+    global tick_for_jump
+    tick_for_jump = 0
+    player = PLayer((WIDTH / 2, 200), player_big_img)
 
-    level1_images_gr = pygame.sprite.Group()
-    level1_images_gr.add(hitbox_floor)
-    level1_images_gr.add(floor_1)
+    text_game = font_text.render("Game", False, (0, 0, 0))
+    text_rect = text_game.get_rect()
+    text_rect = (150, 150)
+
 
     objet_group = pygame.sprite.Group()
     objet_group.add(player)
@@ -18,71 +19,46 @@ def level1():
     while True:
         pressed_button = pygame.key.get_pressed()
         mouse_pos = pygame.mouse.get_pos()
+        hitbox_floor = Images(hitbox_img, (WIDTH / 2, 593))
+        #floor_1 = Images(level1_floor_img,(WIDTH / 2, HEIGHT / 2))
 
-        SCREEN.blit(level1_back_img, (0, 0))
+        level1_images_gr = pygame.sprite.Group()
+        level1_images_gr.add(hitbox_floor)
+        #level1_images_gr.add(floor_1)
+
+        SCREEN.blit(level1_back_img, (-100, 0))
         objet_group.draw(SCREEN)
         level1_images_gr.draw(SCREEN)
+
+
+        player.update(4)
+        player.falling(hitbox_floor, tick_for_jump)
+        tick_for_jump = 0
+        if pressed_button[pygame.K_w] and tick_for_jump == 0:
+            tick_for_jump = 1
+
+        if tick_for_jump != 0:
+            if tick_for_jump < 6:
+                player.rect.centery -= 5
+                print(tick_for_jump)
+            tick_for_jump += 1
+            if tick_for_jump == 11:
+                tick_for_jump = 0
         pygame.display.flip()
 
-        if player.rect.right > WIDTH:
-            return()
-        player.update(12)
-        player.falling(hitbox_floor)
-        pygame.display.flip()
+        #print(f"низ перса {player.rect.bottom}, вверх хитбокса {hitbox_floor.rect.top} центр перса {player.rect.centery} вверх перса {player.rect.top}")
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
-
-
-        if min_fps > clock.get_fps() > 0:
-            min_fps = clock.get_fps()
-
-        clock.tick(FPS)
-
-def level2():
-    player = PLayer((WIDTH / 2, 200), player_img)
-
-    barrier1 = Images(barrier1_lvl2, (284, 580))
-    obstacles_group = pygame.sprite.Group()
-    obstacles_group.add(barrier1)
-
-    hitbox_floor = Images(hitbox_img, (WIDTH / 2, 635))
-    floor = Images(level2_floor_img, (WIDTH / 2, HEIGHT / 2))
-
-    level2_images_gr = pygame.sprite.Group()
-    level2_images_gr.add(hitbox_floor)
-    level2_images_gr.add(floor)
-
-    objet_group = pygame.sprite.Group()
-    objet_group.add(player)
-    clock = pygame.time.Clock()
-    min_fps = 200
-    while True:
-        SCREEN.blit(level2_back_img, (0, 0))
-        objet_group.draw(SCREEN)
-#        obstacles_group.draw(SCREEN)
-        level2_images_gr.draw(SCREEN)
-        pygame.display.flip()
-
-
-        player.update(12)
-        player.falling(hitbox_floor)
-        pygame.display.flip()
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                sys.exit()
-
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    return
 
         if min_fps > clock.get_fps() > 0:
             min_fps = clock.get_fps()
-
+        #print(f"Фактическое кол-во FPS = {clock.get_fps()} а минимальное = {min_fps}")
         clock.tick(FPS)
-
-def game():
-    level1()
-    level2()
 
 
 
@@ -105,12 +81,12 @@ def main_menu():
     buttons_gr.add(play_btn, exit_btn)
     images_gr.add(heading_img)
 
-    SCREEN.blit(fon_img, (100, 0))
-    buttons_gr.draw(SCREEN)
-    images_gr.draw(SCREEN)
-
-    pygame.display.flip()
     while True:
+        SCREEN.blit(fon_img, (0, 0))
+        buttons_gr.draw(SCREEN)
+        images_gr.draw(SCREEN)
+
+        pygame.display.flip()
         mouse_pos = pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
