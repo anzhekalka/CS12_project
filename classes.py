@@ -1,3 +1,5 @@
+import pygame
+
 from resources import *
 
 
@@ -26,6 +28,7 @@ class PLayer(pygame.sprite.Sprite):
         self.is_jump = False
         self.is_falling = False
         self.phase = 0
+        self.shadow = Images(player_img, pos)
         self.jump_direction = 0
         self.is_just_fall = False
         self.phase_going = 0
@@ -101,20 +104,36 @@ class PLayer(pygame.sprite.Sprite):
             self.phase = 0
         # подготовка к прыжку
 
-    def jump(self):
+    def jump(self, obstacles_group):
         if self.is_jump:
+            step = -15
+            self.shadow.rect.centery += step
+            if self.phase <= 2:
+                if len(pygame.sprite.spritecollide(self.shadow, obstacles_group, False, None)) != 0:
+                    self.is_jump = False
+                self.shadow.rect.centery = self.rect.centery
             if self.phase > 2:
-                step = -15
-                self.rect.centery += step
-                self.rect.centerx += self.jump_direction
+                if len(pygame.sprite.spritecollide(self.shadow, obstacles_group, False, None)) == 0:
+                    self.rect.centery = self.shadow.rect.centery
+                else:
+                    self.shadow.rect.centery = self.rect.centery
+                    self.is_jump = False
+                self.shadow.rect.centerx += self.jump_direction
+                if self.jump_direction != 0:
+                    if len(pygame.sprite.spritecollide(self.shadow, obstacles_group, False, None)) == 0:
+                        self.rect.centerx = self.shadow.rect.centerx
+                    else:
+                        self.shadow.rect.centerx = self.rect.centerx
+                        self.jump_direction = 0
             self.phase += 1
             if self.phase == 13:
                 self.is_jump = False
                 self.phase = 0
 
-    def update(self, x):
+    def update(self, x, obstacles_group):
+        self.shadow.rect.center = self.rect.center
         pressed_button = pygame.key.get_pressed()
-        if pressed_button[pygame.K_w]:
+        if pressed_button[pygame.K_w] or pressed_button[pygame.K_SPACE] or pressed_button[pygame.K_UP]:
             self.prepare_jump()
             self.jump_direction = 0
             if pressed_button[pygame.K_a]:
@@ -123,38 +142,57 @@ class PLayer(pygame.sprite.Sprite):
                 self.jump_direction = x
         elif not self.is_jump:
             if pressed_button[pygame.K_a] or pressed_button[pygame.K_LEFT]:
-                self.rect.centerx -= x
-                if self.rect.left < 0:
-                    self.rect.left = 0
+                self.shadow.rect.centerx -= x
+#                if self.shadow.rect.left < 0:
+#                    self.shadow.rect.left = 0
+                if len(pygame.sprite.spritecollide(self.shadow, obstacles_group, False, None)) == 0:
+                    self.rect.center = self.shadow.rect.center
+                else:
+                    self.shadow.rect.center = self.rect.center
                 if not self.is_left:
                     self.is_left = True
             elif pressed_button[pygame.K_d] or pressed_button[pygame.K_RIGHT]:
-                self.rect.centerx += x
+                self.shadow.rect.centerx += x
+                if len(pygame.sprite.spritecollide(self.shadow, obstacles_group, False, None)) == 0:
+                    self.rect.center = self.shadow.rect.center
+                else:
+                    self.shadow.rect.center = self.rect.center
 #                if self.rect.right > WIDTH:
 #                    self.rect.left = 0
                 if self.is_left:
-                    self.is_left = False
+                   self.is_left = False
         self.animation_falling()
-        self.jump()
+        self.jump(obstacles_group)
 
 
 
-    def falling(self, object):
+    def falling(self, obstacles_group):
         if not self.is_jump:
             buffer = self.is_falling
-#            if self.rect.bottom != object.rect.top:
-            if object.rect.top > self.rect.bottom:
+            self.shadow.rect.centery += 15
+            if len(pygame.sprite.spritecollide(self.shadow, obstacles_group, False, None)) == 0:
                 self.is_falling = True
-                self.rect.bottom += 15
-            elif object.rect.top < self.rect.bottom:
-                self.is_falling = False
-                self.rect.bottom = object.rect.top
-            elif object.rect.top == self.rect.bottom:
-                self.is_falling = False
+                self.rect.center = self.shadow.rect.center
+            elif len(pygame.sprite.spritecollide(self.shadow, obstacles_group, False, None)) != 0:
+                self.shadow.rect.centery -= 10
+                if len(pygame.sprite.spritecollide(self.shadow, obstacles_group, False, None)) == 0:
+                    self.rect.center = self.shadow.rect.center
+                    self.is_falling = True
+                else:
+                    self.is_falling = False
+                    self.shadow.rect.center = self.rect.center
             if buffer and not self.is_falling:
                 self.is_just_fall = True
                 self.phase = 0
             self.animation_falling()
+
+    def dying(self, group, *start_pos):
+        if len(pygame.sprite.spritecollide(self, group, False, None)) == 0:
+            pass
+        else:
+            self.rect.center = start_pos
+            self.shadow.rect.center = self.rect.center
+
 
 '''
     def __init__(self, pos, player_img):
@@ -201,25 +239,4 @@ class PLayer(pygame.sprite.Sprite):
                     self.image = self.image_right
                     self.is_left = False
 
-    def falling(self, object, tick_for_jump):
-        if self.rect.bottom != object.rect.top and tick_for_jump == 0:
-            if object.rect.top > self.rect.bottom:
-                self.rect.bottom += 5
-            elif object.rect.top < self.rect.bottom:
-                self.rect.bottom = object.rect.top
-
-    def pmuj(self):
-        if self.jump_p > 0:
-            self.rect.y -= 5
-            self.jump_p += 1
-            self.rect.x += self.jump_direction
-        elif self.jump_p < 0:
-            self.rect.y += 10
-            self.jump_p -= 1
-            self.rect.x += self.jump_direction
-        if self.jump_p == self.jump_height:
-            self.jump_p = -1
-        elif self.jump_p == -10:
-            self.jump_p = 1
-            self.jump = False
 '''

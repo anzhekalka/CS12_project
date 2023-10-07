@@ -35,6 +35,9 @@ barrier6_lvl2 = pygame.image.load(os.path.join(background_img_folder, "level2/ba
 barrier7_lvl2 = pygame.image.load(os.path.join(background_img_folder, "level2/barrier_hitbox7_lvl2.png")).convert_alpha()
 level2_back_img = pygame.image.load(os.path.join(background_img_folder, "level2/level2_background.png")).convert_alpha()
 level2_floor_img = pygame.image.load(os.path.join(background_img_folder, "level2/level2_floor.png")).convert_alpha()
+hitbox1_lvl2_img = pygame.image.load(os.path.join(background_img_folder, "level2/floor_hitbox1_lvl2.png")).convert_alpha()
+hitbox2_lvl2_img = pygame.image.load(os.path.join(background_img_folder, "level2/danger_hitbox2_lvl2.png")).convert_alpha()
+danger1_lvl2 = pygame.image.load(os.path.join(background_img_folder, "level2/floor_hitbox2_lvl2.png")).convert_alpha()
 
 player_big_img = pygame.image.load(os.path.join(image_folder, "character_big.png")).convert_alpha()
 player_img = pygame.image.load(os.path.join(image_folder, "character_official.png")).convert_alpha()
